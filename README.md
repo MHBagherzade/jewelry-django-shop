@@ -1,0 +1,2 @@
+# jewelry-django-shop
+
