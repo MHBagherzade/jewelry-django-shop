@@ -1,0 +1,346 @@
+{% extends 'shared/_layout.html' %}
+{% load static %}
+
+{% block title %}
+    تابلو قیمت طلا - {{ site_setting.site_name }}
+{% endblock %}
+
+
+{% block content %}
+<section id="advertisement">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="tablo-container">
+                    <!-- هدر صفحه -->
+                    <div class="price-table-section">
+                        <h2 class="title text-center">
+                            <i class="fa fa-line-chart"></i> تابلو قیمت لحظه‌ای
+                        </h2>
+                        <div class="last-update text-center">
+                            <span class="label label-warning">
+                                <i class="fa fa-clock-o"></i> 
+                                آخرین به‌روزرسانی: {{ formatted_data.last_updated }}
+                            </span>
+                            <span class="label label-info" style="margin-right: 10px;">
+                               <i class="fa-calender"></i> تاریخ: {{ current_time }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- جدول قیمت طلا -->
+                    <div class="price-table-section">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <i class="fa fa-money"></i> قیمت‌های طلا
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered table-striped">
+                                        <thead>
+                                            <tr class="warning">
+                                                <th class="text-center" width="60%">نوع طلا</th>
+                                                <th class="text-center" width="40%">قیمت (تومان)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for title, price in formatted_data.gold_prices.items %}
+                                            <tr>
+                                                <td>
+                                                    <i class="fa fa-circle text-warning" style="margin-left: 10px;"></i>
+                                                    {{ title }}
+                                                </td>
+                                                <td class="text-left" dir="ltr" style="font-family: 'Tahoma';">
+                                                    <span class="label label-warning">{{ price }}</span>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="2" class="text-center text-muted">
+                                                    <i class="fa fa-exclamation-circle"></i>
+                                                    در حال حاضر اطلاعاتی موجود نیست
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- جدول قیمت سکه -->
+                    <div class="price-table-section">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <i class="fa fa-money"></i> قیمت‌های سکه
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered table-striped">
+                                        <thead>
+                                            <tr class="info">
+                                                <th class="text-center" width="60%">نوع سکه</th>
+                                                <th class="text-center" width="40%">قیمت (تومان)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for title, price in formatted_data.coin_prices.items %}
+                                            <tr>
+                                                <td>
+                                                    <i class="fa fa-circle text-info" style="margin-left: 10px;"></i>
+                                                    {{ title }}
+                                                </td>
+                                                <td class="text-left" dir="ltr" style="font-family: 'Tahoma';">
+                                                    <span class="label label-info">{{ price }}</span>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="2" class="text-center text-muted">
+                                                    <i class="fa fa-exclamation-circle"></i>
+                                                    در حال حاضر اطلاعاتی موجود نیست
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- جدول نرخ ارز -->
+                    <div class="price-table-section">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <i class="fa fa-usd"></i> نرخ ارزها
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered table-striped">
+                                        <thead>
+                                            <tr class="success">
+                                                <th class="text-center" width="60%">نوع ارز</th>
+                                                <th class="text-center" width="40%">قیمت (تومان)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for title, price in formatted_data.currency_rates.items %}
+                                            <tr>
+                                                <td>
+                                                    <i class="fa fa-circle text-success" style="margin-left: 10px;"></i>
+                                                    {{ title }}
+                                                </td>
+                                                <td class="text-left" dir="ltr" style="font-family: 'Tahoma';">
+                                                    <span class="label label-success">{{ price }}</span>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="2" class="text-center text-muted">
+                                                    <i class="fa fa-exclamation-circle"></i>
+                                                    در حال حاضر اطلاعاتی موجود نیست
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- بخش به‌روزرسانی -->
+                    <div class="update-info-card">
+                        <div class="alert alert-warning">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <p class="mb-0">
+                                        <i class="fa fa-info-circle"></i>
+                                        داده‌ها به صورت خودکار هر 5 دقیقه به‌روزرسانی می‌شوند.
+                                        <br>
+                                        <small>آخرین به‌روزرسانی: <strong>{{ formatted_data.last_updated }}</strong></small>
+                                    </p>
+                                </div>
+                                <div class="col-sm-4 text-left">
+                                    <button class="btn btn-warning btn-block" onclick="refreshTable()">
+                                        <i class="fa fa-refresh"></i> به‌روزرسانی
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* استایل‌های مخصوص جدول قیمت */
+    .price-table-section {
+        margin-bottom: 30px;
+    }
+    
+    .price-table-section .panel {
+        border: 1px solid #e6e4df;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    
+    .price-table-section .panel-heading {
+        background: linear-gradient(to right, #fe980f, #fd9a16);
+        color: white;
+        border-radius: 4px 4px 0 0;
+        padding: 15px;
+        font-family: 'BYekan', sans-serif;
+        font-weight: 700;
+        font-size: 16px;
+        border: none;
+    }
+    
+    .price-table-section .panel-title i {
+        margin-left: 10px;
+    }
+    
+    .price-table-section .panel-body {
+        padding: 0;
+    }
+    
+    .price-table-section .table {
+        margin-bottom: 0;
+        border: none;
+    }
+    
+    .price-table-section .table thead th {
+        background: #f8f8f8;
+        color: #696763;
+        font-family: 'BYekan', sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        border-bottom: 2px solid #f0f0e9;
+        text-align: center;
+        padding: 15px 10px;
+    }
+    
+    .price-table-section .table tbody td {
+        padding: 15px 10px;
+        font-family: 'BYekan', sans-serif;
+        font-size: 13px;
+        vertical-align: middle;
+        border-color: #f7f7f0;
+    }
+    
+    .price-table-section .table tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+    
+    .price-table-section .label {
+        font-family: 'Tahoma', sans-serif;
+        font-size: 13px;
+        padding: 5px 10px;
+        border-radius: 3px;
+        display: inline-block;
+    }
+    
+    .last-update {
+        margin: 20px 0 30px 0;
+    }
+    
+    .last-update .label {
+        font-family: 'BYekan', sans-serif;
+        font-size: 14px;
+        padding: 8px 15px;
+        border-radius: 4px;
+    }
+    
+    .update-info-card {
+        margin-top: 20px;
+    }
+    
+    .update-info-card .alert {
+        border-radius: 4px;
+        border: none;
+        margin-bottom: 0;
+    }
+    
+    .update-info-card .btn-warning {
+        background: #fe980f;
+        border: none;
+        font-family: 'BYekan', sans-serif;
+        font-weight: 700;
+        padding: 8px 15px;
+    }
+    
+    .update-info-card .btn-warning:hover {
+        background: #e68a0e;
+    }
+    
+    /* استایل‌های موبایل */
+    @media (max-width: 767px) {
+        .price-table-section .panel-heading {
+            padding: 12px;
+            font-size: 14px;
+        }
+        
+        .price-table-section .table thead th,
+        .price-table-section .table tbody td {
+            padding: 10px 5px;
+            font-size: 12px;
+        }
+        
+        .price-table-section .label {
+            font-size: 11px;
+            padding: 4px 8px;
+        }
+        
+        .last-update .label {
+            display: block;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .last-update .label:last-child {
+            margin-bottom: 0;
+        }
+    }
+</style>
+
+<script>
+    function refreshTable() {
+        const button = document.querySelector('.btn-warning');
+        const originalText = button.innerHTML;
+        
+        button.disabled = true;
+        button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> در حال به‌روزرسانی...';
+        
+        fetch('/api/tablo-data/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('خطا در به‌روزرسانی داده‌ها');
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('خطا در اتصال به سرور');
+                button.disabled = false;
+                button.innerHTML = originalText;
+            });
+    }
+    
+    // به‌روزرسانی خودکار هر 5 دقیقه
+    setInterval(refreshTable, 300000);
+</script>
+{% endblock %}

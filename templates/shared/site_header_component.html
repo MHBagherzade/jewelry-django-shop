@@ -168,6 +168,14 @@
                   >تماس با مـا</a
                 >
               </li>
+              <li>
+                <a
+                  class="{% if request.resolver_match.url_name == 'tablo_page' %}active{% endif %}"
+                  href="{% url 'tablo_module:tablo_page' %}"
+                  >تابلو</a
+                >
+              </li>
+
             </ul>
           </div>
         </div>
