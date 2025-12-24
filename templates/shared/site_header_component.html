@@ -176,6 +176,13 @@
                 >
               </li>
 
+              <li>
+                <a href="{% url 'gold_calculator:calculator_page' %}" 
+                   class="{% if request.resolver_match.url_name == 'calculator_page' %}active{% endif %}">
+                    <i class="fa fa-calculator"></i> ماشین حساب
+                </a>
+              </li>
+
             </ul>
           </div>
         </div>

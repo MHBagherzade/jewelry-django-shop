@@ -28,6 +28,7 @@ urlpatterns = [
     path('order/', include('order_module.urls')),
     # path('tablo/', include('tablo_module.urls')),
     path('tablo/', include('tablo_module.urls')),
+    path('calculator/', include('gold_calculator.urls')),
     path('admin/', admin.site.urls),
 ]
 

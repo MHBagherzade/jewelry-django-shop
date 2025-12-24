@@ -1,0 +1,302 @@
+{% extends 'shared/_layout.html' %}
+{% load static %}
+
+{% block title %}
+    ماشین حساب طلا - {{ site_setting.site_name }}
+{% endblock %}
+
+{% block header_references %}
+<style>
+    /* استایل‌های مخصوص ماشین حساب - منطبق بر main.css شما */
+    .calculator-container {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        padding: 25px;
+        margin-bottom: 30px;
+        border: 1px solid #f0f0e9;
+        font-family: 'BYekan', sans-serif;
+    }
+    
+    .calculator-header {
+        text-align: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #fe980f;
+    }
+    
+    .calculator-header h1 {
+        color: #fe980f;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    
+    .price-source {
+        color: #696763;
+        font-size: 14px;
+        background: #f9f9f9;
+        padding: 8px 15px;
+        border-radius: 4px;
+        display: inline-block;
+    }
+    
+    .price-source i {
+        margin-left: 8px;
+        color: #fe980f;
+    }
+    
+    .input-section {
+        background: #f8f8f8;
+        border-radius: 6px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .input-group-custom {
+        margin-bottom: 20px;
+    }
+    
+    .input-group-custom label {
+        display: block;
+        color: #363432;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+    
+    .input-group-custom input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e6e4df;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: all 0.3s;
+        text-align: left;
+        direction: ltr;
+    }
+    
+    .input-group-custom input:focus {
+        border-color: #fe980f;
+        box-shadow: 0 0 0 3px rgba(254, 152, 15, 0.1);
+        outline: none;
+    }
+    
+    .input-group-custom small {
+        color: #696763;
+        font-size: 12px;
+        display: block;
+        margin-top: 5px;
+    }
+    
+    .result-section {
+        background: #fffaf0;
+        border: 1px solid #fee8c8;
+        border-radius: 6px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    
+    .result-section h3 {
+        color: #fe980f;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+    
+    .result-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0e9;
+    }
+    
+    .result-item:last-child {
+        border-bottom: none;
+        font-weight: 700;
+        font-size: 18px;
+        color: #fe980f;
+        padding-top: 15px;
+        margin-top: 5px;
+    }
+    
+    .result-label {
+        color: #696763;
+    }
+    
+    .result-value {
+        color: #363432;
+        font-family: 'Tahoma', sans-serif;
+        direction: ltr;
+        font-weight: 600;
+    }
+    
+    .update-info {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #f0f0e9;
+        color: #696763;
+        font-size: 14px;
+    }
+    
+    .update-info i {
+        color: #fe980f;
+        margin-left: 8px;
+    }
+    
+    /* استایل‌های ریسپانسیو */
+    @media (max-width: 767px) {
+        .calculator-container {
+            padding: 15px;
+        }
+        
+        .calculator-header h1 {
+            font-size: 20px;
+        }
+        
+        .input-section {
+            padding: 15px;
+        }
+        
+        .result-section {
+            padding: 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section id="advertisement">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="calculator-container">
+                    <!-- هدر ماشین حساب -->
+                    <div class="calculator-header">
+                        <h1><i class="fa fa-calculator"></i> ماشین حساب قیمت طلا</h1>
+                        <div class="price-source">
+                            <i class="fa fa-clock-o"></i> قیمت لحظه‌ای
+                            <span id="last-updated-time">{{ last_updated }}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- بخش ورودی‌ها -->
+                    <div class="input-section">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6">
+                                <div class="input-group-custom">
+                                    <label for="gold-price">
+                                        <i class="fa fa-line-chart"></i> قیمت طلا (تومان)
+                                    </label>
+                                    <input type="number" 
+                                           id="gold-price" 
+                                           value="{{ default_gold_price }}"
+                                           min="1000"
+                                           step="1000">
+                                    <small>قیمت هر گرم طلای ۱۸ عیار</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 col-sm-6">
+                                <div class="input-group-custom">
+                                    <label for="weight">
+                                        <i class="fa fa-balance-scale"></i> وزن (گرم)
+                                    </label>
+                                    <input type="number" 
+                                           id="weight" 
+                                           value="5" 
+                                           step="0.1" 
+                                           min="0.1">
+                                    <small>وزن طلای مورد نظر</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 col-sm-6">
+                                <div class="input-group-custom">
+                                    <label for="making-charge">
+                                        <i class="fa fa-cog"></i> اجرت ساخت (%)
+                                    </label>
+                                    <input type="number" 
+                                           id="making-charge" 
+                                           value="15" 
+                                           step="0.1" 
+                                           min="0" 
+                                           max="100">
+                                    <small>درصد هزینه ساخت</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 col-sm-6">
+                                <div class="input-group-custom">
+                                    <label for="profit">
+                                        <i class="fa fa-money"></i> سود فروشنده (%)
+                                    </label>
+                                    <input type="number" 
+                                           id="profit" 
+                                           value="7" 
+                                           step="0.1" 
+                                           min="0" 
+                                           max="100">
+                                    <small>درصد سود فروشگاه</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- بخش نتایج -->
+                    <div class="result-section">
+                        <h3>
+                            <i class="fa fa-calculator"></i> نتایج محاسبه
+                        </h3>
+                        
+                        <div id="calculation-results">
+                            <div class="result-item">
+                                <span class="result-label">قیمت طلای خام:</span>
+                                <span class="result-value" id="raw-gold-price">
+                                    {{ sample_calculation.raw_price|floatformat:0 }} تومان
+                                </span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">اجرت ساخت:</span>
+                                <span class="result-value" id="making-charge-amount">
+                                    {{ sample_calculation.making_charge|floatformat:0 }} تومان
+                                </span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">سود فروشنده:</span>
+                                <span class="result-value" id="profit-amount">
+                                    {{ sample_calculation.profit|floatformat:0 }} تومان
+                                </span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">مالیات ارزش افزوده (۹٪):</span>
+                                <span class="result-value" id="tax-amount">
+                                    {{ sample_calculation.tax|floatformat:0 }} تومان
+                                </span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">قیمت نهایی:</span>
+                                <span class="result-value" id="final-price">
+                                    {{ sample_calculation.final_price|floatformat:0 }} تومان
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- اطلاعات پایین صفحه -->
+                    <div class="update-info">
+                        <p>
+                            <i class="fa fa-info-circle"></i>
+                            قیمت‌ها به صورت خودکار با تغییر ورودی‌ها به‌روز می‌شوند.
+                            مالیات فقط بر روی اجرت ساخت و سود فروشنده محاسبه می‌شود.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block footer_references %}
+<script src="{% static 'js/gold-calculator.js' %}"></script>
+{% endblock %}

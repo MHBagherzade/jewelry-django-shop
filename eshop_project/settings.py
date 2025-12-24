@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'user_panel_module',
     'order_module',
     'tablo_module',
+    'gold_calculator',
     'polls',
     # external apps
     'django_render_partial',
