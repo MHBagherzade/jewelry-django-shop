@@ -66,38 +66,58 @@
 
                         </div>
                         <div class="col-sm-7">
+                            
                             <div class="product-information"><!--/product-information-->
                                 <img src="/static/images/product-details/new.png" class="newarrival" alt="">
                                 <div>
                                     <h2>{{ product.title }}</h2>
-                                    <p>شناسـه : {{ product.id }}</p>
+                                    <p>کد محصول: <strong>{{ product.product_code|default:"-" }}</strong></p>
                                 </div>
                                 <div>
-									<span>
-										<span>قیمت : {{ product.price|three_digits_currency }} </span>
-									</span>
+                                    <span>
+                                        <span>قیمت نهایی: <strong class="text-warning" style="font-size: 24px;">{{ price_details.final_price|three_digits_currency }} تومان</strong></span>
+                                    </span>
                                     <span>
                                         <label>تعداد :</label>
-										<input type="number" min="1" value="1"
-                                               class="search_box" id="product-count">
-										<button onclick="addProductToOrder({{ product.id }})"
-                                                class="btn btn-fefault cart">
-											<i class="fa fa-shopping-cart"></i>
-											افزودن به سبد خرید
-										</button>
-									</span>
+                                        <input type="number" min="1" value="1" class="search_box" id="product-count">
+                                        <button onclick="addProductToOrder({{ product.id }})" class="btn btn-fefault cart">
+                                            <i class="fa fa-shopping-cart"></i>
+                                            افزودن به سبد خرید
+                                        </button>
+                                    </span>
                                 </div>
                                 <div>
-                                    <p><b>موجـودی :</b> در انبـار موجود می باشد</p>
+                                    <p><b>موجـودی :</b> {% if product.is_available %}✅ در انبـار موجود است{% else %}❌ ناموجود{% endif %}</p>
+                                    {% if product.brand %}<p><b>برنـد :</b> {{ product.brand.title }} </p>{% endif %}
+                                </div>
 
-                                    {% if product.brand %}
-                                        <p><b>برنـد :</b> {{ product.brand.title }} </p>
-                                    {% endif %}
+                                <!-- +++ پنل جدید: جزئیات محاسبه قیمت +++ -->
+                                <div class="panel panel-warning" style="margin-top:20px;">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-calculator"></i> جزئیات قیمت گذاری</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong>وزن:</strong> {{ product.weight_gram }} گرم</p>
+                                                <p><strong>عیار:</strong> {{ product.get_purity_display }}</p>
+                                                <p><strong>اجرت ساخت:</strong> {{ product.making_charge_percent }}% ({{ price_details.making_charge_amount|three_digits_currency }} تومان)</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>قیمت پایه طلا (۱۸ عیار):</strong> {{ gold_base_price|three_digits_currency }} تومان</p>
+                                                <p><strong>قیمت طلای خام:</strong> {{ price_details.raw_gold_price|three_digits_currency }} تومان</p>
+                                                <p><strong>سود و مالیات:</strong> {{ price_details.profit_amount|three_digits_currency }} + {{ price_details.tax_amount|three_digits_currency }} تومان</p>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted small" style="margin-top:10px; border-top:1px solid #eee; padding-top:10px;">
+                                            <i class="fa fa-info-circle"></i> قیمت‌ها بر اساس نرخ لحظه‌ای طلا محاسبه شده‌اند. آخرین به‌روزرسانی: {{ gold_last_updated }}
+                                        </p>
+                                    </div>
                                 </div>
 
                             </div><!--/product-information-->
                         </div>
-                    </div><!--/product-details-->
+                    </div>/product-details
 
                     <div class="category-tab shop-details-tab"><!--category-tab-->
                         <div class="col-sm-12">
